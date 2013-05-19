@@ -1,0 +1,148 @@
+#! /bin/sh
+
+wine war3.exe -opengl &
+
+# auto start game
+#
+
+HERO=_hero_location
+
+sleep 3
+
+
+lan_button="1300,380"
+creat_game_button1="550,830"
+creat_game_button2="1250,750"
+start_game_button="1250,740"
+add_sen_robot1_button="140,110"
+add_sen_robot2_button="140,150"
+add_sen_robot3_button="140,190"
+add_sen_robot4_button="140,230"
+add_sco_robot1_button="140,290"
+add_sco_robot2_button="140,330"
+add_sco_robot3_button="140,370"
+add_sco_robot4_button="140,410"
+add_sco_robot5_button="140,450"
+
+# 近卫
+add_sen_robot1_easy_button="140,210"
+add_sen_robot1_nornal_button="140,220"
+add_sen_robot1_crazy_button="140,240"
+
+add_sen_robot2_easy_button="140,240"
+add_sen_robot2_normal_button="140,260"
+add_sen_robot2_crazy_button="140,280"
+
+add_sen_robot3_easy_button="140,290"
+add_sen_robot3_normal_button="140,310"
+add_sen_robot3_crazy_button="140,330"
+
+add_sen_robot4_easy_button="140,340"
+add_sen_robot4_normal_button="140,350"
+add_sen_robot4_crazy_button="140,370"
+
+# 天灾
+add_sco_robot1_easy_button="140,385"
+add_sco_robot1_normal_button="140,395"
+add_sco_robot1_crazy_button="140,415"
+
+add_sco_robot2_easy_button="140,425"
+add_sco_robot2_normal_button="140,435"
+add_sco_robot2_crazy_button="140,455"
+
+add_sco_robot3_easy_button="140,460"
+add_sco_robot3_normal_button="140,470"
+add_sco_robot3_crazy_button="140,490"
+
+add_sco_robot4_easy_button="140,500"
+add_sco_robot4_normal_button="140,510"
+add_sco_robot4_crazy_button="140,530"
+
+add_sco_robot5_easy_button="140,535"
+add_sco_robot5_normal_button="140,550"
+add_sco_robot5_crazy_button="140,570"
+
+sig_choose() {
+        w=`echo $1 | awk -F, '{print $1}'`
+        h=`echo $1 | awk -F, '{print $2}'`
+        xdotool mousemove $w $h
+}
+
+click1() {
+        sig_choose $1
+        sleep 1
+        xdotool click 1
+}
+
+creat_game() {
+        xdotool key --delay 1500 alt+l alt+c alt+c
+}
+
+default_add_robots() {
+		# 近卫 4 个令人发狂的
+		click1 $add_sen_robot1_button
+		click1 $add_sen_robot1_crazy_button
+
+		click1 $add_sen_robot2_button
+		click1 $add_sen_robot2_crazy_button
+		
+		click1 $add_sen_robot3_button
+		click1 $add_sen_robot3_crazy_button
+		
+		click1 $add_sen_robot4_button
+		click1 $add_sen_robot4_crazy_button
+
+		# 天灾 5 个令人发狂的
+		click1 $add_sco_robot1_button
+		click1 $add_sco_robot1_crazy_button
+		
+		click1 $add_sco_robot2_button
+		click1 $add_sco_robot2_crazy_button
+		
+		click1 $add_sco_robot3_button
+		click1 $add_sco_robot3_crazy_button
+		
+		click1 $add_sco_robot4_button
+		click1 $add_sco_robot4_crazy_button
+		
+		click1 $add_sco_robot5_button
+		click1 $add_sco_robot5_crazy_button
+}
+
+start_game() {
+        click1 $start_game_button
+}
+
+msg() {
+        echo $1 | xsel -b
+        xdotool key ctrl+v
+        xdotool key Return
+}
+
+game_mode() {
+        xdotool key --delay 500 Return
+        msg $1
+}
+
+creat_game
+sleep 2
+default_add_robots
+# sleep 20
+msg '适度游戏，有益健康'
+start_game
+sleep 18
+game_mode '-apne'
+
+# auto select hero
+select_hero() {
+        raw_info=$(cat $HERO | grep $1 | awk -F: '{print $2}')
+        tavern=$(echo $raw_info | awk -F\; '{print $1}')
+        hero=$(echo $raw_info | awk -F\; '{print $2}')
+
+        click1 $tavern
+        click1 $hero
+}
+
+select_hero 影魔
+sleep 11
+select_hero 影魔
